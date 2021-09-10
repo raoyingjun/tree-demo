@@ -56,27 +56,24 @@
 
 </ul>
 <script>
-    /**
-     * 将一个嵌套列表树化。可支持展开、收缩树
-     */
     function treefy() {
         var treeItems = document.getElementsByClassName('treefy-item')
         for (var i = 0, len = treeItems.length; i < len; i++) {
-            (function (i) { // 使用闭包：利用闭包特性，记录每一个树节点的装填
+            (function (i) {
                 var tree = treeItems[i]
-                var childTree = tree.getElementsByClassName('treefy')[0] // 获取子树：拿到当前节点的子树
-                if (!childTree) return // 没有子树：说明没有子节点、不需要做任何处理
-                var isOpened = true // 标志位：记录子树是否打开的状态
-                var defaultDisplay = getComputedStyle(childTree).display // 默认display方式：抓取元素的默认display值，打开树时赋给元素相应display样式属性
+                var childTree = tree.getElementsByClassName('treefy')[0]
+                if (!childTree) return
+                var isOpened = true
+                var defaultDisplay = getComputedStyle(childTree).display
                 tree.classList.add('icon', 'icon-right')
                 tree.addEventListener('click', function (e) {
-                    if (childTree) { // 如果有子树：则执行操作，否则不执行
-                        isOpened = !isOpened // 标志位取反：原来是打开的-》切换到关闭；原来是关闭的-》切换到打开
-                        childTree.style.display = isOpened ? defaultDisplay : 'none' // 切换display显示：显示则使用元素原本默认的diplay值，否则使用'none'
+                    if (childTree) {
+                        isOpened = !isOpened
+                        childTree.style.display = isOpened ? defaultDisplay : 'none'
                         tree.classList.remove('icon-right', 'icon-down') 
-                        tree.classList.add(isOpened ? 'icon-down' : 'icon-right') // 切换icon显示：显示则使用“-”，否则使用“+”
+                        tree.classList.add(isOpened ? 'icon-down' : 'icon-right')
                     }
-                    e.stopPropagation() // 防止冒泡给父辈元素：只在自身触发，不然默认也会触发父元素的事件处理，导致click操作不符合预期表现
+                    e.stopPropagation()
                 })
             })(i)
         }
